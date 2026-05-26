@@ -1,6 +1,6 @@
 # SUMMIT Financial Learning — Platform
 
-A gamified financial-literacy platform for Canadian K-12 students, starting with the Waterloo Region District School Board (WRDSB). Web + native mobile, multi-tenant, designed to scale into district-wide deployments.
+A gamified financial-literacy platform for Canadian 6-12 students, starting with the Waterloo Region District School Board (WRDSB). Web + native mobile, multi-tenant, designed to scale into district-wide deployments.
 
 ## Stack
 
