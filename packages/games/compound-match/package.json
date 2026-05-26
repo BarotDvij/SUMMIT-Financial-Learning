@@ -1,0 +1,19 @@
+{
+  "name": "@summit/game-compound-match",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./manifest.ts",
+  "exports": {
+    ".": "./manifest.ts"
+  },
+  "scripts": {
+    "build": "node ./scripts/copy-to-web.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@summit/config": "workspace:*",
+    "@summit/game-sdk": "workspace:*",
+    "typescript": "^5.7.2"
+  }
+}

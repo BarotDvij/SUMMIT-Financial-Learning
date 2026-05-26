@@ -1,0 +1,8 @@
+{
+  "extends": "@summit/config/tsconfig/library",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

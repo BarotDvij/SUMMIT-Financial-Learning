@@ -1,0 +1,9 @@
+{
+  "extends": "@summit/config/tsconfig/next",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["sanity.config.ts", "schemas/**/*.ts", "structure/**/*.ts"]
+}

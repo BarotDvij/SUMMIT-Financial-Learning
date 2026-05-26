@@ -1,0 +1,41 @@
+name: db-check
+
+on:
+  pull_request:
+    paths:
+      - 'packages/db/**'
+      - 'packages/schema/**'
+
+jobs:
+  drizzle-check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+      DATABASE_URL_UNPOOLED: postgres://postgres:postgres@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.15.1
+      - run: corepack enable && corepack prepare pnpm@9.15.0 --activate
+      - run: pnpm install --frozen-lockfile
+      - name: Generate migrations and confirm clean
+        run: |
+          pnpm --filter @summit/db generate
+          if [ -n "$(git status --porcelain packages/db/drizzle)" ]; then
+            echo "Drizzle migrations are out of date. Run 'pnpm db:generate' and commit the result.";
+            git diff --stat packages/db/drizzle;
+            exit 1;
+          fi
+      - run: pnpm --filter @summit/db migrate

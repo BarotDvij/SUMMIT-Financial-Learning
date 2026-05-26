@@ -1,0 +1,10 @@
+{
+  "extends": "@summit/config/tsconfig/library",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts", "drizzle.config.ts"]
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>SUMMIT — Compound Match</title>
+    <link rel="stylesheet" href="./game.css" />
+  </head>
+  <body>
+    <main id="app">
+      <header>
+        <div class="brand">SUMMIT · Compound Match</div>
+        <div class="hud">
+          <div class="hud-item"><span class="hud-label">Round</span><span id="round">1 / 4</span></div>
+          <div class="hud-item"><span class="hud-label">Score</span><span id="score">0</span></div>
+        </div>
+      </header>
+
+      <section id="prompt">
+        <p class="lead">Which amount does this grow into?</p>
+        <div class="case">
+          <div class="case-row"><span>Starting amount</span><strong id="principal">$1,000</strong></div>
+          <div class="case-row"><span>Annual rate</span><strong id="rate">6%</strong></div>
+          <div class="case-row"><span>Years</span><strong id="years">10</strong></div>
+        </div>
+      </section>
+
+      <section id="choices" aria-label="Answer choices"></section>
+
+      <section id="feedback" hidden>
+        <div id="feedback-icon" aria-hidden="true">✓</div>
+        <div id="feedback-text">Nice.</div>
+        <button id="next" type="button">Next round</button>
+      </section>
+
+      <section id="results" hidden>
+        <h1>You got <span id="results-correct">0</span> of <span id="results-total">4</span></h1>
+        <p id="results-message">Tap close to return to the lesson.</p>
+        <button id="play-again" type="button">Play again</button>
+      </section>
+    </main>
+    <script type="module" src="./game.js"></script>
+  </body>
+</html>

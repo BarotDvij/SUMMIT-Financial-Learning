@@ -1,0 +1,8 @@
+# Default owner — until we have more engineers, every PR pings the founders.
+*       @BarotDvij
+
+# Compliance + legal docs need an explicit privacy review acknowledgement.
+/docs/legal/**          @BarotDvij
+/packages/db/**         @BarotDvij
+/packages/api/**        @BarotDvij
+/.github/**             @BarotDvij

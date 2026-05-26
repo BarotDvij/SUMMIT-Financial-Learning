@@ -1,0 +1,5 @@
+{
+  "extends": "@summit/config/tsconfig/library",
+  "compilerOptions": { "noEmit": true },
+  "include": ["manifest.ts", "src/**/*.ts"]
+}
