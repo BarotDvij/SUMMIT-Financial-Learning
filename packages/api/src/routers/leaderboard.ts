@@ -9,6 +9,7 @@ import {
 import { z } from 'zod';
 
 import { protectedProcedure, router } from '../trpc';
+import { assertInTenant } from '../util/tenant';
 
 const windowToDate = (w: 'daily' | 'weekly' | 'all_time'): Date | null => {
   if (w === 'all_time') return null;
@@ -30,11 +31,13 @@ export const leaderboardRouter = router({
     .query(async ({ ctx, input }) => {
       const since = windowToDate(input.window);
 
-      const tenantOk =
-        (input.scope.kind === 'classroom' || input.scope.kind === 'school') ||
-        (input.scope.kind === 'organization' &&
-          input.scope.organizationId === ctx.user!.organizationId);
-      if (!tenantOk) throw new TRPCError({ code: 'FORBIDDEN' });
+      if (input.scope.kind === 'classroom') {
+        await assertInTenant(ctx, schema.classroom, input.scope.classroomId);
+      } else if (input.scope.kind === 'school') {
+        await assertInTenant(ctx, schema.school, input.scope.schoolId);
+      } else if (input.scope.organizationId !== ctx.user!.organizationId) {
+        throw new TRPCError({ code: 'FORBIDDEN' });
+      }
 
       let scopeFilter;
       if (input.scope.kind === 'classroom') {

@@ -3,16 +3,17 @@
 import { useEffect } from 'react';
 import posthog from 'posthog-js';
 
-import { env } from '~/env';
-
 let initialized = false;
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (initialized) return;
-    if (!env.NEXT_PUBLIC_POSTHOG_KEY) return;
-    posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
-      api_host: env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com',
+    // Read NEXT_PUBLIC_* directly: importing ~/env here would bundle the
+    // server-env parser into the client, where it throws in production.
+    const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+    if (!key) return;
+    posthog.init(key, {
+      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://eu.i.posthog.com',
       capture_pageview: true,
       capture_pageleave: true,
       persistence: 'localStorage+cookie',

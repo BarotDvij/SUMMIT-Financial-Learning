@@ -8,6 +8,13 @@
       "when": 1791295349321,
       "tag": "0000_slim_catseye",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791295672618,
+      "tag": "0001_append_only",
+      "breakpoints": true
     }
   ]
 }

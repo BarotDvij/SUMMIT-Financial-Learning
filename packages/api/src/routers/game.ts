@@ -5,6 +5,7 @@ import { completeGameSessionInput, startGameSessionInput } from '@summit/schema'
 
 import { protectedProcedure, router, studentWritable } from '../trpc';
 import { awardXp } from '../repositories/xp';
+import { assertInTenant } from '../util/tenant';
 
 export const gameRouter = router({
   catalog: protectedProcedure.query(async ({ ctx }) => {
@@ -12,6 +13,7 @@ export const gameRouter = router({
   }),
 
   start: studentWritable.input(startGameSessionInput).mutation(async ({ ctx, input }) => {
+    if (input.classroomId) await assertInTenant(ctx, schema.classroom, input.classroomId);
     const [game] = await ctx.db
       .select()
       .from(schema.game)
