@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { and, eq, isNotNull } from '@summit/db';
+import { eq, isNotNull } from '@summit/db';
 import { schema } from '@summit/db';
 import { idSchema } from '@summit/schema';
 import { z } from 'zod';

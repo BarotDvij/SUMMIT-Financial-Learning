@@ -67,5 +67,11 @@ export default tseslint.config(
       react: { version: 'detect' },
     },
   },
+  {
+    // Tool configs (Metro, Babel, Tailwind presets) must load CommonJS.
+    files: ['**/*.config.{js,ts}'],
+    languageOptions: { globals: globals.commonjs },
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
   prettier,
 );

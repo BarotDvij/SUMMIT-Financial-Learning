@@ -2,9 +2,10 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 
+import { and, eq, isNotNull, isNull, schema, type Database } from '@summit/db';
 import { hasMinimumRole, hasPermission, type Permission, type Role } from '@summit/schema';
 
-import type { Context } from './context';
+import type { Context, CurrentUser } from './context';
 
 export const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -59,18 +60,37 @@ export function requirePermission(permission: Permission) {
   );
 }
 
+/**
+ * AGENTS.md rule 3. A student who needs parental consent may write only while
+ * they have a granted, unwithdrawn `consent_record`. Reads the record itself,
+ * not the `user.consentGrantedAt` mirror, so a withdrawal takes effect at once.
+ */
+export async function requireStudentWritable(db: Database, user: CurrentUser) {
+  if (user.role !== 'student' || !user.consentRequired) return;
+  const [active] = await db
+    .select({ id: schema.consentRecord.id })
+    .from(schema.consentRecord)
+    .where(
+      and(
+        eq(schema.consentRecord.studentUserId, user.id),
+        isNotNull(schema.consentRecord.grantedAt),
+        isNull(schema.consentRecord.withdrawnAt),
+      ),
+    )
+    .limit(1);
+  if (!active) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Parental consent required before activity can be recorded.',
+      cause: { code: 'CONSENT_REQUIRED' },
+    });
+  }
+}
+
 /** Gates student write paths on a valid `consent_record`. */
 export const studentWritable = protectedProcedure.use(
   middleware(async ({ ctx, next }) => {
-    const u = ctx.user!;
-    if (u.role !== 'student') return next({ ctx });
-    if (u.consentRequired && !u.consentGrantedAt) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: 'Parental consent required before activity can be recorded.',
-        cause: { code: 'CONSENT_REQUIRED' },
-      });
-    }
+    await requireStudentWritable(ctx.db, ctx.user!);
     return next({ ctx });
   }),
 );

@@ -19,13 +19,14 @@
   "dependencies": {
     "@summit/db": "workspace:*",
     "@summit/schema": "workspace:*",
-    "@trpc/server": "^11.0.0-rc.660",
     "@trpc/client": "^11.0.0-rc.660",
+    "@trpc/server": "^11.0.0-rc.660",
     "superjson": "^2.2.2",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@summit/config": "workspace:*",
+    "@types/node": "^22.10.5",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }

@@ -47,7 +47,7 @@ to the files now in the repo and the human follow-up steps.
 ### p0-auth-rbac — Clerk + roles
 
 **Shipped:**
-- `apps/web/src/middleware.ts` (Clerk middleware).
+- `apps/web/src/proxy.ts` (Clerk middleware; Next 16 name).
 - `apps/mobile/app/_layout.tsx` (Clerk provider + secure-store token cache).
 - `packages/schema/src/roles.ts` (canonical role enum + permission matrix).
 - `packages/api/src/trpc.ts` (`protectedProcedure`, `requireRole`,

@@ -42,6 +42,7 @@
     },
     "test": {
       "dependsOn": ["^build"],
+      "env": ["DATABASE_URL", "CI"],
       "outputs": ["coverage/**"]
     },
     "clean": {

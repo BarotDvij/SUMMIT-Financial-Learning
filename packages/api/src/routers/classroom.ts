@@ -10,6 +10,7 @@ import {
 import { protectedProcedure, requirePermission, router } from '../trpc';
 import { recordAudit } from '../util/audit';
 import { generateJoinCode } from '../util/join-code';
+import { assertInTenant } from '../util/tenant';
 
 export const classroomRouter = router({
   /** Teacher view: my classrooms. */
@@ -30,6 +31,7 @@ export const classroomRouter = router({
   create: requirePermission('classroom.create')
     .input(createClassroomInput)
     .mutation(async ({ ctx, input }) => {
+      await assertInTenant(ctx, schema.school, input.schoolId);
       const joinCode = await generateJoinCode(ctx.db);
       const [created] = await ctx.db
         .insert(schema.classroom)

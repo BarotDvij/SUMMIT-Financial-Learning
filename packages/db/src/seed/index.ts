@@ -11,7 +11,7 @@ import 'dotenv/config';
 
 import { createHash } from 'node:crypto';
 
-import { getDb, schema, eq } from '../index';
+import { getDb, schema } from '../index';
 
 const HASH = (s: string) => createHash('sha256').update(s).digest('hex');
 

@@ -5,6 +5,7 @@ import { createAssignmentInput, idSchema } from '@summit/schema';
 
 import { protectedProcedure, requirePermission, router } from '../trpc';
 import { recordAudit } from '../util/audit';
+import { assertInTenant } from '../util/tenant';
 
 export const assignmentRouter = router({
   forClassroom: protectedProcedure.input(idSchema).query(async ({ ctx, input: classroomId }) => {
@@ -23,6 +24,7 @@ export const assignmentRouter = router({
   create: requirePermission('classroom.create')
     .input(createAssignmentInput)
     .mutation(async ({ ctx, input }) => {
+      await assertInTenant(ctx, schema.classroom, input.classroomId);
       const targetRefId =
         input.target.kind === 'lesson' ? input.target.lessonId : input.target.gameId;
       const [created] = await ctx.db

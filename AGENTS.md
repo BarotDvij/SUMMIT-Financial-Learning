@@ -14,7 +14,7 @@ Project-wide guidance for AI coding agents (Cursor, Claude Code, Codex, etc.).
 
 1. **Multi-tenant from day one.** Every DB row that holds user-generated content must carry `organization_id`. Every API procedure must enforce the caller's tenant. Never trust client-supplied `organization_id`.
 2. **Roles are sacred.** The role enum is `super_admin | district_admin | school_admin | teacher | student | parent`. New roles need an ADR.
-3. **Student writes are gated by consent.** Anything that creates or updates `xp_event`, `game_session`, `attempt`, or `assignment_submission` for a student must pass through `requireStudentWritable(userId)` in `packages/api`, which checks the `consent_record` state.
+3. **Student writes are gated by consent.** Anything that creates or updates `xp_event`, `game_session`, `attempt`, or `assignment_submission` for a student must pass through `requireStudentWritable(db, user)` in `packages/api` (procedures get it via the `studentWritable` builder), which checks the `consent_record` state.
 4. **Append-only event tables.** `xp_event` and `audit_log` are never updated or deleted. Build derived views/snapshots instead.
 5. **TypeScript strict everywhere.** No `any`. Use `unknown` and narrow.
 6. **Schemas first.** All API inputs/outputs use Zod schemas from `@summit/schema`. Server actions and tRPC procedures must validate.

@@ -3,6 +3,7 @@ import { schema } from '@summit/db';
 import { z } from 'zod';
 
 import { requirePermission, router } from '../trpc';
+import { assertInTenant } from '../util/tenant';
 
 /** District/school admin dashboards. */
 export const adminRouter = router({
@@ -41,6 +42,7 @@ export const adminRouter = router({
   schoolSummary: requirePermission('analytics.view.school')
     .input(z.object({ schoolId: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
+      await assertInTenant(ctx, schema.school, input.schoolId);
       const [classes] = await ctx.db
         .select({ n: sql<number>`count(*)::int` })
         .from(schema.classroom)
