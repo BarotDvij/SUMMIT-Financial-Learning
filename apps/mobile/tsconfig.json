@@ -5,7 +5,7 @@
     "paths": {
       "~/*": ["./src/*"]
     },
-    "types": ["expo", "react-native"]
+    "types": ["expo", "react-native", "nativewind/types"]
   },
   "include": [
     "**/*.ts",
