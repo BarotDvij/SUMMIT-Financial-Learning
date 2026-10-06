@@ -7,7 +7,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --dir src",
+    "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "copy-games": "pnpm --filter @summit/game-compound-match build"
   },

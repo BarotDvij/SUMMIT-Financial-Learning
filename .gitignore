@@ -60,9 +60,8 @@ apps/studio/dist/
 apps/studio/.sanity/
 
 # Drizzle
-packages/db/drizzle/
+# Migrations in packages/db/drizzle/ are committed (db-check.yml enforces it).
 packages/db/.drizzle/
-!packages/db/drizzle/meta/
 
 # Sentry
 .sentryclirc
